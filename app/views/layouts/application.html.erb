@@ -1,14 +1,27 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-<head>
-  <title>DeviseExample</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title><%= h(yield(:title) || "Devise") %></title>
+    <%= csrf_meta_tag %>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div id="container">
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
+      <%- end -%>
 
-<%= yield %>
+      <p><%= link_to 'Home', root_path %></p>
 
-</body>
+      <div style="clear:both"></div>
+
+      <%- if show_title? -%>
+        <h1><%=h yield(:title) %></h1>
+      <%- end -%>
+
+      <%= yield %>
+    </div>
+  </body>
 </html>
