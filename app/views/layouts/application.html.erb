@@ -4,17 +4,32 @@
   <head>
     <title><%= h(yield(:title) || "Devise") %></title>
     <%= csrf_meta_tag %>
-    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= stylesheet_link_tag    "application", media: "all" %>
+    <%= javascript_include_tag :application %>
     <%= yield(:head) %>
   </head>
   <body>
     <div id="container">
       <%- flash.each do |name, msg| -%>
-        <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
+        <%= content_tag :div, msg, id: "flash_#{name}" if msg.is_a?(String) %>
       <%- end -%>
 
       <p><%= link_to 'Home', root_path %></p>
 
+      <% if user_signed_in? -%>
+        <div id="user_login_box" style="float:right">
+          <%= current_user.email %> |
+          <%= link_to 'My info', edit_user_registration_path %> |
+          <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
+        </div>
+      <% end -%>
+      <% if admin_signed_in? -%>
+        <div id="admin_login_box" style="float:left">
+          <%= current_admin.email %> |
+          <%= link_to 'Admin section', admins_path %> |
+          <%= link_to 'Sign out', destroy_admin_session_path, method: :delete %>
+        </div>
+      <% end -%>
       <div style="clear:both"></div>
 
       <%- if show_title? -%>
